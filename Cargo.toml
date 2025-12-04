@@ -1,0 +1,21 @@
+[package]
+name = "blocklist"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.7"
+diesel = { version = "2.3.4", features = ["postgres", "time", "r2d2", "uuid", "network-address", "ipnet-address"] }
+diesel_migrations = { version = "2.3.1", features = ["postgres"] }
+diesel-async = { version = "0.7.4", features = ["tokio-postgres", "postgres", "deadpool", "bb8"]}
+tokio = {version = "1.48.0", features = ["full"]}
+log = "0.4.29"
+thiserror = "2.0.17"
+ipnetwork = { version = "0.21.1", features = ["serde"]}
+serde = { version = "1.0.228", features = ["derive", "std"] }
+askama = "0.14.0"
+itertools = "0.14.0"
+clap = {version = "4.5.53", features = ["default", "derive", "env"]}
+dotenvy = "0.15.7"
+tracing = { version = "0.1.43", features = ["async-await"]}
+tracing-subscriber = { version = "0.3.22", features = ["env-filter", "local-time", "time"] }

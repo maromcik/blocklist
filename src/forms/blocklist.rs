@@ -1,0 +1,7 @@
+use serde::Deserialize;
+use crate::database::models::IpVersion;
+
+#[derive(Debug, Deserialize, Eq, PartialEq)]
+pub struct BlocklistIpVersion {
+    pub ip_version: IpVersion
+}
