@@ -1,3 +1,4 @@
+use std::env;
 use axum::Router;
 use axum::routing::{get, post};
 use clap::Parser;
@@ -73,10 +74,16 @@ async fn main() -> Result<(), AppError> {
         .route("/blocklist", post(add_ip))
         .with_state(pool);
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+    let listener = tokio::net::TcpListener::bind(parse_host())
         .await?;
     info!("listening on {}", listener.local_addr()?);
     axum::serve(listener, app).await?;
 
     Ok(())
+}
+
+pub fn parse_host() -> String {
+    let hostname = env::var("BLOCKLIST_HOSTNAME").unwrap_or("localhost".to_string());
+    let port = env::var("BLOCKLIST_PORT").unwrap_or("6060".to_string());
+    format!("{hostname}:{port}")
 }
