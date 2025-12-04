@@ -1,11 +1,12 @@
 use axum::Router;
-use axum::routing::get;
+use axum::routing::{get, post};
 use clap::Parser;
 use log::info;
+use tower_http::services::ServeDir;
 use tracing_subscriber::EnvFilter;
 use crate::database::init::init;
 use crate::error::AppError;
-use crate::handlers::blocklist::get_ip;
+use crate::handlers::blocklist::{add_ip, get_ip};
 
 pub mod database;
 pub mod error;
@@ -13,6 +14,7 @@ pub mod pool;
 pub mod handlers;
 pub mod templates;
 pub mod forms;
+
 #[derive(Debug, Parser, Default)]
 struct PreCli {
     /// Optional `.env` file path for loading environment variables.
@@ -66,8 +68,11 @@ async fn main() -> Result<(), AppError> {
 
     let pool = init().await?;
     let app = Router::new()
+        .nest_service("/static", ServeDir::new("static"))
         .route("/blocklist", get(get_ip))
+        .route("/blocklist", post(add_ip))
         .with_state(pool);
+
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await?;
     info!("listening on {}", listener.local_addr()?);

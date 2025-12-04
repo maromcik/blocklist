@@ -1,13 +1,13 @@
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
 use crate::database::init::Id;
-use diesel::{deserialize, serialize, AsExpression, FromSqlRow, Identifiable, Queryable, QueryableByName, Selectable};
+use crate::error::AppError;
 use diesel::backend::Backend;
 use diesel::deserialize::FromSql;
 use diesel::serialize::{Output, ToSql};
 use diesel::sql_types::SmallInt;
+use diesel::{deserialize, serialize, AsChangeset, AsExpression, FromSqlRow, Identifiable, Insertable, Queryable, Selectable};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use crate::error::AppError;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(
     Serialize,
@@ -29,6 +29,13 @@ pub struct Blocklist {
     pub description: Option<String>
 }
 
+#[derive(Serialize, Deserialize, AsChangeset, Insertable, Debug)]
+#[diesel(table_name = crate::database::schema::blocklist)]
+pub struct BlocklistCreate {
+    pub ip: ipnetwork::IpNetwork,
+    pub version: IpVersion,
+    pub description: Option<String>
+}
 
 #[repr(i16)]
 #[derive(

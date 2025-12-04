@@ -4,7 +4,6 @@ use askama::Template;
 use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
 use std::env;
-use std::error::Error;
 use std::fmt::Debug;
 use std::num::ParseIntError;
 use std::str::ParseBoolError;
