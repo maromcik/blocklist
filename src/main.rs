@@ -1,20 +1,20 @@
-use std::env;
+use crate::database::init::init;
+use crate::error::AppError;
+use crate::handlers::blocklist::{add_ip, get_ip};
 use axum::Router;
 use axum::routing::{get, post};
 use clap::Parser;
 use log::info;
+use std::env;
 use tower_http::services::ServeDir;
 use tracing_subscriber::EnvFilter;
-use crate::database::init::init;
-use crate::error::AppError;
-use crate::handlers::blocklist::{add_ip, get_ip};
 
 pub mod database;
 pub mod error;
-pub mod pool;
-pub mod handlers;
-pub mod templates;
 pub mod forms;
+pub mod handlers;
+pub mod pool;
+pub mod templates;
 
 #[derive(Debug, Parser, Default)]
 struct PreCli {
@@ -74,8 +74,7 @@ async fn main() -> Result<(), AppError> {
         .route("/blocklist", post(add_ip))
         .with_state(pool);
 
-    let listener = tokio::net::TcpListener::bind(parse_host())
-        .await?;
+    let listener = tokio::net::TcpListener::bind(parse_host()).await?;
     info!("listening on {}", listener.local_addr()?);
     axum::serve(listener, app).await?;
 

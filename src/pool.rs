@@ -2,9 +2,7 @@ use crate::database::error::DbError;
 use crate::error::AppError;
 use axum::extract::{FromRef, FromRequestParts};
 use axum::http::request::Parts;
-use diesel_async::{
-    pooled_connection::bb8, AsyncPgConnection,
-};
+use diesel_async::{AsyncPgConnection, pooled_connection::bb8};
 
 pub struct DbConnection(pub bb8::PooledConnection<'static, AsyncPgConnection>);
 

@@ -1,5 +1,5 @@
-use serde::Serialize;
 use askama::Template;
+use serde::Serialize;
 
 #[derive(Template, Serialize)]
 #[template(path = "error.html")]

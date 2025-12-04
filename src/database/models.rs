@@ -4,21 +4,16 @@ use diesel::backend::Backend;
 use diesel::deserialize::FromSql;
 use diesel::serialize::{Output, ToSql};
 use diesel::sql_types::SmallInt;
-use diesel::{deserialize, serialize, AsChangeset, AsExpression, FromSqlRow, Identifiable, Insertable, Queryable, Selectable};
+use diesel::{
+    AsChangeset, AsExpression, FromSqlRow, Identifiable, Insertable, Queryable, Selectable,
+    deserialize, serialize,
+};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 #[derive(
-    Serialize,
-    Deserialize,
-    Queryable,
-    Selectable,
-    Identifiable,
-    Eq,
-    PartialEq,
-    Hash,
-    Debug,
+    Serialize, Deserialize, Queryable, Selectable, Identifiable, Eq, PartialEq, Hash, Debug,
 )]
 #[diesel(table_name = crate::database::schema::blocklist)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -26,7 +21,7 @@ pub struct Blocklist {
     pub id: Id,
     pub ip: ipnetwork::IpNetwork,
     pub version: IpVersion,
-    pub description: Option<String>
+    pub description: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, AsChangeset, Insertable, Debug)]
@@ -34,26 +29,16 @@ pub struct Blocklist {
 pub struct BlocklistCreate {
     pub ip: ipnetwork::IpNetwork,
     pub version: IpVersion,
-    pub description: Option<String>
+    pub description: Option<String>,
 }
 
 #[repr(i16)]
-#[derive(
-    AsExpression,
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    Copy,
-    FromSqlRow,
-    Hash,
-)]
+#[derive(AsExpression, Debug, Clone, PartialEq, Eq, Copy, FromSqlRow, Hash)]
 #[diesel(sql_type = SmallInt)]
 pub enum IpVersion {
     Ipv4,
-    Ipv6
+    Ipv6,
 }
-
 
 impl Display for IpVersion {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -71,7 +56,7 @@ impl FromStr for IpVersion {
         match s.to_lowercase().as_str() {
             "ipv4" => Ok(IpVersion::Ipv4),
             "ipv6" => Ok(IpVersion::Ipv6),
-            _ => Err(AppError::ParseError(format!("Unknown IP version {}", s)))
+            _ => Err(AppError::ParseError(format!("Unknown IP version {}", s))),
         }
     }
 }
@@ -79,7 +64,7 @@ impl FromStr for IpVersion {
 impl Serialize for IpVersion {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
-        S: Serializer
+        S: Serializer,
     {
         serializer.serialize_str(&self.to_string())
     }
@@ -88,7 +73,7 @@ impl Serialize for IpVersion {
 impl<'de> Deserialize<'de> for IpVersion {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
-        D: Deserializer<'de>
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
         IpVersion::from_str(&s).map_err(serde::de::Error::custom)
