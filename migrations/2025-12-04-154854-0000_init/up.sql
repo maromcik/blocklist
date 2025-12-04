@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "blocklist"
 (
     id                  bigserial    PRIMARY KEY,
     ------------------------------  ---------------
-    ip                  cidr         NOT NULL,
+    ip                  cidr         NOT NULL UNIQUE,
     version             smallint     NOT NULL,
     description         text
 );
