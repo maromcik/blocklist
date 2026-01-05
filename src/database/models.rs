@@ -27,6 +27,12 @@ pub struct Blocklist {
     pub description: Option<String>,
 }
 
+impl Display for Blocklist {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}; {:?}; {:?}; {:?}", self.ip, self.country_code, self.isp, self.user_agent)
+    }
+}
+
 #[derive(Serialize, Deserialize, AsChangeset, Insertable, Debug)]
 #[diesel(table_name = crate::database::schema::blocklist)]
 pub struct BlocklistCreate {

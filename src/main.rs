@@ -1,6 +1,6 @@
 use crate::database::init::init;
 use crate::error::AppError;
-use crate::handlers::blocklist::{add_ip, get_ip};
+use crate::handlers::blocklist::{add_ip, get_ips};
 use axum::Router;
 use axum::routing::{get, post};
 use clap::Parser;
@@ -70,7 +70,7 @@ async fn main() -> Result<(), AppError> {
     let pool = init().await?;
     let app = Router::new()
         .nest_service("/static", ServeDir::new("static"))
-        .route("/blocklist", get(get_ip))
+        .route("/blocklist", get(get_ips))
         .route("/blocklist", post(add_ip))
         .with_state(pool);
 

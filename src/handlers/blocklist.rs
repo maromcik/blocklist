@@ -12,7 +12,22 @@ use diesel::{QueryDsl, SelectableHelper};
 use diesel_async::RunQueryDsl;
 use itertools::Itertools;
 
-pub async fn get_ip(
+pub async fn get_all_ips(
+    DbConnection(mut conn): DbConnection,
+    params: Query<BlocklistIpVersion>,
+) -> Result<impl IntoResponse, AppError> {
+    let ips = blocklist::table
+        .select(Blocklist::as_select())
+        .filter(blocklist::version.eq(params.ip_version))
+        .load::<Blocklist>(&mut conn)
+        .await
+        .map_err(DbError::from)?
+        .into_iter()
+        .join("\n");
+    Ok(ips)
+}
+
+pub async fn get_ips(
     DbConnection(mut conn): DbConnection,
     params: Query<BlocklistIpVersion>,
 ) -> Result<impl IntoResponse, AppError> {
