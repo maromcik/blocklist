@@ -19,6 +19,7 @@ pub async fn get_ips(
     let Some(ver) = params.0.ip_version else {
         let ips = blocklist::table
             .select(Blocklist::as_select())
+            .order_by(blocklist::id.desc())
             .load::<Blocklist>(&mut conn)
             .await
             .map_err(DbError::from)?
