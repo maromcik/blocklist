@@ -4,7 +4,8 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
 pub struct BlocklistIpVersion {
-    pub ip_version: IpVersion,
+    #[serde(default)]
+    pub ip_version: Option<IpVersion>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]
