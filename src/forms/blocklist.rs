@@ -1,5 +1,5 @@
-use ipnetwork::IpNetwork;
 use crate::database::models::{BlocklistCreate, IpVersion};
+use ipnetwork::IpNetwork;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Eq, PartialEq)]

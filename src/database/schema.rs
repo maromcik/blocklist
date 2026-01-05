@@ -9,5 +9,6 @@ diesel::table! {
         isp -> Nullable<Text>,
         user_agent -> Nullable<Text>,
         description -> Nullable<Text>,
+        added_at -> Timestamptz,
     }
 }

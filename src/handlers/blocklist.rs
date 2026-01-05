@@ -4,14 +4,13 @@ use crate::database::schema::blocklist;
 use crate::error::AppError;
 use crate::forms::blocklist::{BlocklistIp, BlocklistIpVersion};
 use crate::pool::DbConnection;
+use axum::Json;
 use axum::extract::Query;
 use axum::response::IntoResponse;
-use axum::Json;
 use diesel::ExpressionMethods;
 use diesel::{QueryDsl, SelectableHelper};
 use diesel_async::RunQueryDsl;
 use itertools::Itertools;
-
 
 pub async fn get_ips(
     DbConnection(mut conn): DbConnection,

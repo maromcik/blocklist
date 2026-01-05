@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS "blocklist"
     country_code        text,
     isp                 text,
     user_agent          text,
-    description         text
+    description         text,
+    added_at            timestamptz  NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS "blocklist_ip_version_idx" ON blocklist (version);

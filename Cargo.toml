@@ -17,6 +17,7 @@ askama = "0.14.0"
 itertools = "0.14.0"
 clap = {version = "4.5.53", features = ["default", "derive", "env"]}
 dotenvy = "0.15.7"
+time = { version = "0.3.44", features = ["serde", "local-offset", "parsing", "formatting"] }
 tracing = { version = "0.1.43", features = ["async-await"]}
 tower = { version = "0.5.2", features = ["util"]}
 tracing-subscriber = { version = "0.3.22", features = ["env-filter", "local-time", "time"] }

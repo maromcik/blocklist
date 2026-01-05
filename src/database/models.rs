@@ -2,6 +2,7 @@ use crate::database::init::Id;
 use crate::error::AppError;
 use diesel::backend::Backend;
 use diesel::deserialize::FromSql;
+use diesel::internal::derives::multiconnection::time::OffsetDateTime;
 use diesel::serialize::{Output, ToSql};
 use diesel::sql_types::SmallInt;
 use diesel::{
@@ -25,11 +26,16 @@ pub struct Blocklist {
     pub isp: Option<String>,
     pub user_agent: Option<String>,
     pub description: Option<String>,
+    pub added_at: OffsetDateTime,
 }
 
 impl Display for Blocklist {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}; {:?}; {:?}; {:?}", self.ip, self.country_code, self.isp, self.user_agent)
+        write!(
+            f,
+            "{}; {:?}; {:?}; {:?}; {}",
+            self.ip, self.country_code, self.isp, self.user_agent, self.added_at
+        )
     }
 }
 
