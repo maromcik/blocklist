@@ -34,7 +34,7 @@ impl Display for Blocklist {
         write!(
             f,
             "{}; {:?}; {:?}; {:?}; {}",
-            self.ip, self.country_code, self.isp, self.user_agent, self.added_at
+            self.ip, self.country_code, self.isp, self.user_agent, self.added_at.date()
         )
     }
 }
