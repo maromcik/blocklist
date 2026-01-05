@@ -4,6 +4,9 @@ CREATE TABLE IF NOT EXISTS "blocklist"
     ------------------------------  ---------------
     ip                  cidr         NOT NULL UNIQUE,
     version             smallint     NOT NULL,
+    country_code        text,
+    isp                 text,
+    user_agent          text,
     description         text
 );
 

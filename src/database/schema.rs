@@ -5,6 +5,9 @@ diesel::table! {
         id -> Int8,
         ip -> Cidr,
         version -> Int2,
+        country_code -> Nullable<Text>,
+        isp -> Nullable<Text>,
+        user_agent -> Nullable<Text>,
         description -> Nullable<Text>,
     }
 }

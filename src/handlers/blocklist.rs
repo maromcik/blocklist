@@ -1,16 +1,15 @@
 use crate::database::error::DbError;
-use crate::database::models::{Blocklist, BlocklistCreate, IpVersion};
+use crate::database::models::{Blocklist, BlocklistCreate};
 use crate::database::schema::blocklist;
 use crate::error::AppError;
 use crate::forms::blocklist::{BlocklistIp, BlocklistIpVersion};
 use crate::pool::DbConnection;
-use axum::Json;
 use axum::extract::Query;
 use axum::response::IntoResponse;
+use axum::Json;
 use diesel::ExpressionMethods;
 use diesel::{QueryDsl, SelectableHelper};
 use diesel_async::RunQueryDsl;
-use ipnetwork::IpNetwork;
 use itertools::Itertools;
 
 pub async fn get_ip(
@@ -33,15 +32,7 @@ pub async fn add_ip(
     DbConnection(mut conn): DbConnection,
     params: Json<BlocklistIp>,
 ) -> Result<(), AppError> {
-    let version = match params.ip {
-        IpNetwork::V4(_) => IpVersion::Ipv4,
-        IpNetwork::V6(_) => IpVersion::Ipv6,
-    };
-    let ip = BlocklistCreate {
-        ip: params.ip,
-        version,
-        description: None,
-    };
+    let ip = BlocklistCreate::from(params.0);
     diesel::insert_into(blocklist::table)
         .values(ip)
         .execute(&mut conn)

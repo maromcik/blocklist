@@ -21,6 +21,9 @@ pub struct Blocklist {
     pub id: Id,
     pub ip: ipnetwork::IpNetwork,
     pub version: IpVersion,
+    pub country_code: Option<String>,
+    pub isp: Option<String>,
+    pub user_agent: Option<String>,
     pub description: Option<String>,
 }
 
@@ -29,6 +32,9 @@ pub struct Blocklist {
 pub struct BlocklistCreate {
     pub ip: ipnetwork::IpNetwork,
     pub version: IpVersion,
+    pub country_code: Option<String>,
+    pub isp: Option<String>,
+    pub user_agent: Option<String>,
     pub description: Option<String>,
 }
 
